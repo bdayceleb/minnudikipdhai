@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+pdfenv/
+
+# Environment variables
+.env
+
+# Build output
+dist/
+.next/
+
+# IDE
+.vscode/
+.idea/
+
+# Python / PDF extraction artifacts
+*.pyc
+__pycache__/
+sql_pdf_content.txt
+sql_v2_content.txt
+sql_v3_content.txt

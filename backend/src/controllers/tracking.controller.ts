@@ -54,3 +54,63 @@ export const recordHeartbeat = async (req: AuthRequest, res: Response): Promise<
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+export const chapterHeartbeat = async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+        const userId = req.user?.userId;
+        const { courseId, chapterId, chapterTitle, timeSpentSeconds } = req.body;
+
+        if (!userId || !courseId || !chapterId || typeof timeSpentSeconds !== 'number') {
+            res.status(400).json({ error: 'Invalid chapter heartbeat payload' });
+            return;
+        }
+
+        // Upsert the chapter activity
+        await prisma.chapterActivity.upsert({
+            where: {
+                user_id_course_id_chapter_id: {
+                    user_id: userId,
+                    course_id: courseId,
+                    chapter_id: chapterId
+                }
+            },
+            update: {
+                time_spent_seconds: { increment: timeSpentSeconds },
+                last_visited_at: new Date()
+            },
+            create: {
+                user_id: userId,
+                course_id: courseId,
+                chapter_id: chapterId,
+                chapter_title: chapterTitle || chapterId,
+                time_spent_seconds: timeSpentSeconds
+            }
+        });
+
+        // We also want to increment daily aggregate for general study time
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        await prisma.dailyStudyStats.upsert({
+            where: {
+                user_id_date: {
+                    user_id: userId,
+                    date: today
+                }
+            },
+            update: {
+                total_time_seconds: { increment: timeSpentSeconds }
+            },
+            create: {
+                user_id: userId,
+                date: today,
+                total_time_seconds: timeSpentSeconds
+            }
+        });
+
+        res.status(200).json({ success: true });
+    } catch (error) {
+        console.error('Chapter tracking heartbeat error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};

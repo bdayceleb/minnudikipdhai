@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuthStore } from '../../store/authStore';
 
@@ -8,12 +8,15 @@ export default function ProtectedRoute({ children, requireRole }: { children: Re
     const router = useRouter();
     const { user, isAuthenticated, isLoading, checkAuth } = useAuthStore();
     const pathname = usePathname();
+    const hasChecked = useRef(false);
 
+    // Always check auth on mount
     useEffect(() => {
-        if (!isAuthenticated && !isLoading) {
+        if (!hasChecked.current) {
+            hasChecked.current = true;
             checkAuth();
         }
-    }, [isAuthenticated, isLoading, checkAuth]);
+    }, [checkAuth]);
 
     useEffect(() => {
         if (!isLoading) {
@@ -22,7 +25,6 @@ export default function ProtectedRoute({ children, requireRole }: { children: Re
                     router.push('/login');
                 }
             } else if (requireRole && user?.role !== requireRole) {
-                // Logged in but wrong role - send to their respective dashboard
                 if (user?.role === 'ADMIN') {
                     router.push('/admin');
                 } else {
@@ -34,13 +36,12 @@ export default function ProtectedRoute({ children, requireRole }: { children: Re
 
     if (isLoading) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-slate-50">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
+            <div className="flex items-center justify-center min-h-screen bg-rose-50">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-rose-500"></div>
             </div>
         );
     }
 
-    // Only render children if constraints met
     if (isAuthenticated && (!requireRole || user?.role === requireRole)) {
         return <>{children}</>;
     }

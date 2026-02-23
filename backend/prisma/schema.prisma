@@ -22,9 +22,10 @@ model User {
   updated_at    DateTime @updatedAt
 
   sessions      Session[]
-  page_activity PageActivity[]
-  lectures      Lecture[]
-  study_stats   DailyStudyStats[]
+  page_activity   PageActivity[]
+  chapter_activity ChapterActivity[]
+  lectures        Lecture[]
+  study_stats     DailyStudyStats[]
 }
 
 model Session {
@@ -46,6 +47,19 @@ model PageActivity {
   page_name          String
   time_spent_seconds Int      @default(0)
   visited_at         DateTime @default(now())
+}
+
+model ChapterActivity {
+  id                 String   @id @default(uuid())
+  user_id            String
+  user               User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  course_id          String   // e.g., the lecture ID
+  chapter_id         String   // e.g., 'chapter-0'
+  chapter_title      String   // e.g., 'Introduction'
+  time_spent_seconds Int      @default(0)
+  last_visited_at    DateTime @default(now())
+
+  @@unique([user_id, course_id, chapter_id])
 }
 
 model Lecture {

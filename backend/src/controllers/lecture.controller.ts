@@ -29,6 +29,9 @@ export const getAllLectures = async (req: AuthRequest, res: Response): Promise<v
     }
 };
 
+import fs from 'fs/promises';
+import path from 'path';
+
 export const getLectureById = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
         const id = req.params.id as string;
@@ -47,6 +50,20 @@ export const getLectureById = async (req: AuthRequest, res: Response): Promise<v
         if (role === 'USER' && !lecture.is_published) {
             res.status(403).json({ error: 'Forbidden' });
             return;
+        }
+
+        // Feature: Git-based Markdown CMS Workflow
+        // Slugify the title
+        const slug = lecture.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+        const contentPath = path.join(process.cwd(), 'content', `${slug}.md`);
+
+        try {
+            const fileContent = await fs.readFile(contentPath, 'utf8');
+            lecture.content = fileContent; // Override DB content with Git file content
+            console.log(`Served ${slug}.md from local Git repository`);
+        } catch (fileErr) {
+            // File not found, gracefully fallback to database
+            console.log(`Local markdown file not found for ${slug}, falling back to DB content.`);
         }
 
         res.json(lecture);

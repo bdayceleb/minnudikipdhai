@@ -1,4 +1,4 @@
-import { FileText, Lock } from 'lucide-react';
+import { FileText, Lock, ChevronRight } from 'lucide-react';
 
 interface Lecture {
     id: string;
@@ -19,38 +19,47 @@ export default function LectureCard({ lecture, onClick, isAdmin }: LectureCardPr
         <div
             onClick={onClick}
             className={`
-                bg-white/5 border backdrop-blur-sm rounded-2xl p-6 cursor-pointer transition-all duration-300 group
+                group relative rounded-2xl p-6 cursor-pointer transition-all duration-300 overflow-hidden
                 ${isAdmin && !lecture.is_published
-                    ? 'border-yellow-500/30 hover:border-yellow-500/60 hover:bg-yellow-500/5'
-                    : 'border-white/10 hover:border-rose-500/50 hover:bg-white/[0.07]'
+                    ? 'bg-amber-50 border-2 border-dashed border-amber-200 hover:border-amber-400 hover:bg-amber-100/50'
+                    : 'bg-white border border-slate-200 hover:border-emerald-300 hover:shadow-lg hover:shadow-emerald-500/10 hover:-translate-y-1'
                 }
             `}
         >
             <div className="flex justify-between items-start mb-4">
-                <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 border ${isAdmin && !lecture.is_published
+                        ? 'bg-amber-50 border-amber-200 text-amber-500'
+                        : 'bg-emerald-50 border-emerald-100 text-emerald-600'
+                    }`}>
                     {isAdmin && !lecture.is_published ? (
-                        <Lock size={20} className="text-yellow-400" />
+                        <Lock size={18} />
                     ) : (
-                        <FileText size={20} className={isAdmin ? "" : "text-rose-400"} />
+                        <FileText size={18} />
                     )}
                 </div>
                 {isAdmin && (
-                    <span className={`text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded-full ${lecture.is_published ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/20' : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/20'}`}>
-                        {lecture.is_published ? 'Published' : 'Draft'}
+                    <span className={`text-[10px] uppercase tracking-wider font-bold px-2.5 py-1 rounded-full ${lecture.is_published
+                            ? 'bg-teal-50 text-teal-600 border border-teal-200'
+                            : 'bg-amber-50 text-amber-600 border border-amber-200'
+                        }`}>
+                        {lecture.is_published ? 'Live' : 'Draft'}
                     </span>
                 )}
             </div>
 
-            <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-rose-400 transition-colors">
+            <h3 className="text-base font-bold text-slate-800 mb-2 group-hover:text-emerald-700 transition-colors">
                 {lecture.title}
             </h3>
 
-            <p className="text-sm text-neutral-400 font-light line-clamp-2 leading-relaxed">
+            <p className="text-sm text-slate-500 font-medium line-clamp-2 leading-relaxed">
                 {lecture.description}
             </p>
 
-            <div className="mt-6 text-xs text-neutral-500 font-medium tracking-wide">
-                Added {new Date(lecture.created_at).toLocaleDateString()}
+            <div className="mt-5 flex items-center justify-between">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
+                    {new Date(lecture.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                </span>
+                <ChevronRight size={16} className="text-slate-300 group-hover:text-emerald-500 group-hover:translate-x-1 transition-all" />
             </div>
         </div>
     );

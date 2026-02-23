@@ -3,7 +3,8 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Sparkles, Heart, HeartHandshake, ArrowRight, Activity, Clock, Shield, Star, Lock } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useAuthStore } from '../store/authStore';
 
 export default function LandingPage() {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
@@ -35,6 +36,12 @@ export default function LandingPage() {
     }
   ];
 
+  const { isAuthenticated, user, checkAuth } = useAuthStore();
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-200 overflow-hidden relative selection:bg-rose-500/30 flex flex-col">
       {/* Background Ambient Glows */}
@@ -49,8 +56,8 @@ export default function LandingPage() {
           Minu Ki Pdhai
         </div>
         <div className="flex gap-4 items-center">
-          <Link href="/login" className="px-5 py-2.5 rounded-full bg-white/10 text-white text-sm font-semibold hover:bg-white/20 border border-white/10 transition-all flex items-center gap-2 group backdrop-blur-md">
-            Enter Our World
+          <Link href={isAuthenticated ? (user?.role === 'ADMIN' ? '/admin' : '/dashboard') : "/login"} className="px-5 py-2.5 rounded-full bg-white/10 text-white text-sm font-semibold hover:bg-white/20 border border-white/10 transition-all flex items-center gap-2 group backdrop-blur-md">
+            {isAuthenticated ? 'Go to Dashboard' : 'Enter Our World'}
             <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
@@ -121,7 +128,7 @@ export default function LandingPage() {
                 />
 
                 {/* Overlay gradient */}
-                <div className={`absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/80 to-transparent z-10`} />
+                <div className={`absolute inset - 0 bg - gradient - to - t from - neutral - 950 via - neutral - 950 / 80 to - transparent z - 10`} />
 
                 {/* Content */}
                 <div className="absolute inset-0 z-20 p-8 flex flex-col justify-end">
@@ -130,18 +137,16 @@ export default function LandingPage() {
                     animate={{ y: hoveredCard === card.id ? -10 : 0 }}
                     className="transform transition-transform duration-500"
                   >
-                    <div className={`w-14 h-14 rounded-2xl bg-${card.color}-500/20 text-${card.color}-400 flex items-center justify-center mb-6 backdrop-blur-md border border-${card.color}-500/30`}>
+                    <div className={`w - 14 h - 14 rounded - 2xl bg - ${card.color} -500 / 20 text - ${card.color} -400 flex items - center justify - center mb - 6 backdrop - blur - md border border - ${card.color} -500 / 30`}>
                       {card.icon}
                     </div>
                     <h3 className="text-2xl font-bold text-white mb-3">{card.title}</h3>
 
-                    {/* Description only shows on hover on desktop, always on mobile */}
                     <div className="overflow-hidden">
                       <motion.p
-                        initial={{ opacity: 0.7, height: 'auto' }}
-                        animate={{
-                          opacity: hoveredCard === card.id || window.innerWidth < 1024 ? 1 : 0.7,
-                        }}
+                        initial={{ opacity: 0.6 }}
+                        animate={{ opacity: hoveredCard === card.id ? 1 : 0.6 }}
+                        transition={{ duration: 0.3 }}
                         className="text-neutral-300 leading-relaxed font-light text-sm md:text-base"
                       >
                         {card.desc}
@@ -155,8 +160,8 @@ export default function LandingPage() {
         </section>
 
         {/* Sleep Logic Gamification */}
-        <section className="relative z-10 py-24 px-6 md:px-16 mt-12 bg-neutral-950/50 border-y border-white/5 backdrop-blur-xl">
-          <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+        <section className="relative z-10 py-24 px-6 md:px-16 mt-12 bg-neutral-950/50 border-y border-white/5 backdrop-blur-xl flex items-center min-h-[80vh]">
+          <div className="max-w-6xl mx-auto w-full grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-bold uppercase tracking-widest mb-6">
                 <Clock size={14} /> The Sacred Rule
@@ -216,7 +221,7 @@ export default function LandingPage() {
                   <div className="h-3 w-full bg-neutral-950 rounded-full overflow-hidden border border-white/5 shadow-inner">
                     <motion.div
                       initial={{ width: 0 }}
-                      whileInView={{ width: '25%' }}
+                      whileInView={{ width: '50%' }}
                       viewport={{ once: true }}
                       transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
                       className="h-full bg-gradient-to-r from-indigo-600 to-indigo-400 rounded-full shadow-[0_0_15px_rgba(99,102,241,0.6)] relative"

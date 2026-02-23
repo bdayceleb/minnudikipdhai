@@ -31,17 +31,9 @@ async function main() {
     });
     console.log(`Created user: ${user.username}`);
 
-    // Create Sample Lecture
-    await prisma.lecture.create({
-        data: {
-            title: 'Introduction to Databases',
-            description: 'Learn the fundamentals of relational databases and SQL.',
-            content: '# Introduction to Databases\n\nA database is an organized collection of structured information, or data, typically stored electronically in a computer system.\n\n## What is SQL?\nSQL stands for Structured Query Language. It is used for storing, manipulating and retrieving data in databases.',
-            is_published: true,
-            created_by: admin.id,
-        }
-    });
-    console.log('Created sample lecture');
+    // Note: Lectures are seeded separately via seed_sql_notes.ts
+    // No sample lectures created here to avoid duplicates.
+    console.log('Seed complete (users only). Run seed_sql_notes.ts to seed lectures.');
 }
 
 main()

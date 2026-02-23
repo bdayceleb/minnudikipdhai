@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../../store/authStore';
 import { motion } from 'framer-motion';
@@ -14,8 +14,21 @@ export default function LoginPage() {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const login = useAuthStore(state => state.login);
+    const { login, isAuthenticated, user, checkAuth, isLoading: isAuthLoading } = useAuthStore();
     const router = useRouter();
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            checkAuth();
+        }
+    }, [isAuthenticated, checkAuth]);
+
+    useEffect(() => {
+        if (isAuthenticated && user) {
+            if (user.role === 'ADMIN') router.push('/admin');
+            else router.push('/dashboard');
+        }
+    }, [isAuthenticated, user, router]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -36,6 +49,8 @@ export default function LoginPage() {
             setIsLoading(false);
         }
     };
+
+    if (isAuthLoading || isAuthenticated) return null;
 
     return (
         <div className="min-h-screen bg-rose-50 flex flex-col justify-center relative overflow-hidden selection:bg-rose-500/30">

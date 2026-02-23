@@ -152,3 +152,47 @@ export const getMe = async (req: Request, res: Response): Promise<void> => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+export const changePassword = async (req: Request, res: Response): Promise<void> => {
+    try {
+        // @ts-ignore
+        const userId = req.user?.userId;
+        if (!userId) {
+            res.status(401).json({ error: 'Not authenticated' });
+            return;
+        }
+
+        const { currentPassword, newPassword } = req.body;
+
+        if (!currentPassword || !newPassword) {
+            res.status(400).json({ error: 'Current password and new password are required' });
+            return;
+        }
+
+        if (newPassword.length < 3) {
+            res.status(400).json({ error: 'New password must be at least 3 characters' });
+            return;
+        }
+
+        const user = await prisma.user.findUnique({ where: { id: userId } });
+        if (!user) {
+            res.status(404).json({ error: 'User not found' });
+            return;
+        }
+
+        if (currentPassword !== user.password) {
+            res.status(401).json({ error: 'Current password is incorrect' });
+            return;
+        }
+
+        await prisma.user.update({
+            where: { id: userId },
+            data: { password: newPassword }
+        });
+
+        res.json({ message: 'Password changed successfully' });
+    } catch (error) {
+        console.error('Change password error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};

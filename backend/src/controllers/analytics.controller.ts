@@ -38,12 +38,20 @@ export const getAdminDashboardStats = async (req: AuthRequest, res: Response): P
             orderBy: { _sum: { time_spent_seconds: 'desc' } }
         });
 
+        // 6. Chapter Activity Summary
+        const chapterActivity = await prisma.chapterActivity.groupBy({
+            by: ['chapter_id', 'chapter_title', 'course_id'],
+            _sum: { time_spent_seconds: true },
+            orderBy: { _sum: { time_spent_seconds: 'desc' } }
+        });
+
         res.json({
             totalTimeSeconds: totalStats._sum.total_time_seconds || 0,
             todayTimeSeconds: todayStats?.total_time_seconds || 0,
             weeklyChart,
             recentSessions,
-            pageActivity
+            pageActivity,
+            chapterActivity
         });
 
     } catch (error) {
