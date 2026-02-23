@@ -73,10 +73,10 @@ export default function UserDashboard() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-neutral-950 flex justify-center items-center">
-                <div className="flex flex-col items-center gap-4 text-neutral-400">
+            <div className="min-h-screen bg-rose-50 flex justify-center items-center">
+                <div className="flex flex-col items-center gap-4 text-rose-400">
                     <Loader2 className="animate-spin text-rose-500" size={32} />
-                    <p className="font-light tracking-wide">Syncing data...</p>
+                    <p className="font-medium tracking-wide">Syncing our world...</p>
                 </div>
             </div>
         );
@@ -88,28 +88,28 @@ export default function UserDashboard() {
 
     return (
         <ProtectedRoute requireRole="USER">
-            <div className="min-h-screen bg-neutral-950 text-neutral-200 p-4 md:p-8 font-sans selection:bg-rose-500/30 overflow-x-hidden relative">
+            <div className="min-h-screen bg-[#fff5f6] text-rose-950 p-4 md:p-8 font-sans selection:bg-rose-500/30 overflow-x-hidden relative">
                 {/* Background ambient glow */}
-                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[150px] pointer-events-none" />
-                <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-rose-600/10 rounded-full blur-[150px] pointer-events-none" />
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white rounded-full blur-[100px] pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-rose-200/40 rounded-full blur-[120px] pointer-events-none" />
 
                 <div className="max-w-7xl mx-auto relative z-10">
                     {/* Header */}
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 bg-white/5 backdrop-blur-xl p-6 md:px-10 rounded-3xl border border-white/10 shadow-2xl gap-4">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 bg-white/60 backdrop-blur-xl p-6 md:px-10 rounded-3xl border border-rose-100 shadow-xl shadow-rose-900/5 gap-4">
                         <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center">
+                            <div className="w-12 h-12 rounded-full bg-rose-100 text-rose-500 flex items-center justify-center shadow-inner">
                                 <HeartHandshake size={24} />
                             </div>
                             <div>
-                                <h1 className="text-2xl font-bold tracking-tight text-white">Welcome, {user?.name}</h1>
-                                <p className="text-neutral-400 text-sm font-light">Let's push the bar higher today.</p>
+                                <h1 className="text-2xl font-bold tracking-tight text-rose-950">Welcome, {user?.name}</h1>
+                                <p className="text-rose-500 text-sm font-medium">Let's build our future today.</p>
                             </div>
                         </div>
                         <button
                             onClick={logout}
-                            className="px-5 py-2.5 flex items-center gap-2 text-sm font-medium text-neutral-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/5 rounded-full transition-all"
+                            className="px-5 py-2.5 flex items-center gap-2 text-sm font-semibold text-rose-500 hover:text-white bg-white hover:bg-rose-500 border border-rose-100 hover:border-transparent rounded-full transition-all shadow-sm"
                         >
-                            <LogOut size={16} /> Logout
+                            <LogOut size={16} /> Disconnect
                         </button>
                     </div>
 
@@ -119,44 +119,44 @@ export default function UserDashboard() {
                             {/* Gamification Panel */}
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                                className="bg-neutral-900 border border-white/10 rounded-3xl p-8 shadow-2xl relative overflow-hidden"
+                                className="bg-white/80 border border-rose-100 rounded-3xl p-8 shadow-xl shadow-rose-900/5 relative overflow-hidden backdrop-blur-md"
                             >
                                 <div className="flex items-center gap-3 mb-8">
-                                    <Activity className="text-rose-400" size={24} />
-                                    <h2 className="text-xl font-bold text-white tracking-tight">Today's Protocol</h2>
+                                    <Activity className="text-rose-500" size={24} />
+                                    <h2 className="text-xl font-bold text-rose-950 tracking-tight">Today's Protocol</h2>
                                 </div>
 
                                 <div className="space-y-8 relative z-10">
                                     {/* User Meter */}
                                     <div>
-                                        <div className="flex justify-between mb-3 text-sm font-medium">
-                                            <span className="text-neutral-400 uppercase tracking-wider text-xs">Your Focus</span>
-                                            <span className="text-rose-400">{todayHours} / 4 hrs</span>
+                                        <div className="flex justify-between mb-3 text-sm font-bold">
+                                            <span className="text-rose-400 uppercase tracking-widest text-[10px]">Your Focus</span>
+                                            <span className="text-rose-600">{todayHours} <span className="text-rose-400 font-medium">/ 4 hrs</span></span>
                                         </div>
-                                        <div className="h-2 w-full bg-neutral-800 rounded-full overflow-hidden">
+                                        <div className="h-2.5 w-full bg-rose-100 rounded-full overflow-hidden shadow-inner">
                                             <motion.div
                                                 initial={{ width: 0 }} animate={{ width: `${Math.min((stats?.todayTimeSeconds || 0) / (4 * 3600) * 100, 100)}%` }}
-                                                className="h-full bg-rose-500 rounded-full shadow-[0_0_10px_rgba(244,63,94,0.5)]"
+                                                className="h-full bg-gradient-to-r from-rose-400 to-rose-500 rounded-full"
                                             />
                                         </div>
                                     </div>
 
                                     {/* Admin Sleep Meter */}
                                     <div>
-                                        <div className="flex justify-between mb-3 text-sm font-medium">
-                                            <span className="text-neutral-400 uppercase tracking-wider text-xs">His Rest</span>
-                                            <span className="text-indigo-400">{sleepHours} / 8 hrs</span>
+                                        <div className="flex justify-between mb-3 text-sm font-bold">
+                                            <span className="text-indigo-400 uppercase tracking-widest text-[10px]">His Rest</span>
+                                            <span className="text-indigo-600">{sleepHours} <span className="text-indigo-400 font-medium">/ 8 hrs</span></span>
                                         </div>
-                                        <div className="h-2 w-full bg-neutral-800 rounded-full overflow-hidden">
+                                        <div className="h-2.5 w-full bg-indigo-50 rounded-full overflow-hidden shadow-inner border border-indigo-100/50">
                                             <motion.div
                                                 initial={{ width: 0 }} animate={{ width: `${Math.min((stats?.todayTimeSeconds || 0) / (4 * 3600) * 100, 100)}%` }}
-                                                className="h-full bg-indigo-500 rounded-full shadow-[0_0_10px_rgba(99,102,241,0.5)]"
+                                                className="h-full bg-gradient-to-r from-indigo-400 to-indigo-500 rounded-full"
                                             />
                                         </div>
                                     </div>
 
-                                    <div className="bg-white/5 p-4 rounded-xl border border-white/10 text-center">
-                                        <p className="text-neutral-400 italic text-sm font-light">
+                                    <div className="bg-rose-50/50 p-4 rounded-xl border border-rose-100/50 text-center">
+                                        <p className="text-rose-600 italic text-sm font-medium">
                                             {Number(todayHours) >= 2
                                                 ? "Systems optimized. I am resting peacefully. ❤️"
                                                 : "Deficit detected. Please increase focus time. 🥺"}
@@ -166,29 +166,29 @@ export default function UserDashboard() {
                             </motion.div>
 
                             {/* Total Stats */}
-                            <div className="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl shadow-xl">
-                                <h3 className="font-semibold text-neutral-300 tracking-tight flex items-center gap-2 mb-6">
+                            <div className="bg-white/80 backdrop-blur-md border border-rose-100 p-8 rounded-3xl shadow-xl shadow-rose-900/5">
+                                <h3 className="font-semibold text-rose-900 tracking-tight flex items-center gap-2 mb-6">
                                     <Flame className="text-orange-500" size={20} /> Overall Journey
                                 </h3>
 
                                 <div className="flex items-end gap-2 mb-8">
-                                    <span className="text-6xl font-bold text-white tracking-tighter">
+                                    <span className="text-6xl font-black text-rose-950 tracking-tighter">
                                         {totalHours}
                                     </span>
-                                    <span className="text-neutral-500 font-medium pb-2 uppercase text-xs tracking-widest">Hours</span>
+                                    <span className="text-rose-400 font-bold pb-2 uppercase text-xs tracking-widest">Hours</span>
                                 </div>
 
                                 <div className="h-48 mt-4">
                                     <ResponsiveContainer width="100%" height="100%">
                                         <LineChart data={stats?.weeklyChart}>
-                                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#27272a" />
-                                            <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#71717a' }} dy={10} />
-                                            <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#71717a' }} dx={-10} />
+                                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffe4e6" />
+                                            <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#fb7185' }} dy={10} />
+                                            <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#fb7185' }} dx={-10} />
                                             <Tooltip
-                                                cursor={{ stroke: '#f43f5e', strokeWidth: 1, strokeDasharray: '4 4' }}
-                                                contentStyle={{ backgroundColor: '#18181b', borderColor: '#27272a', borderRadius: '12px', color: '#fff' }}
+                                                cursor={{ stroke: '#fda4af', strokeWidth: 1, strokeDasharray: '4 4' }}
+                                                contentStyle={{ backgroundColor: '#fff', borderColor: '#ffe4e6', borderRadius: '12px', color: '#4c0519', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
                                             />
-                                            <Line type="monotone" dataKey="hours" stroke="#f43f5e" strokeWidth={3} dot={{ r: 4, fill: '#18181b', strokeWidth: 2, stroke: '#f43f5e' }} activeDot={{ r: 6, fill: '#f43f5e' }} />
+                                            <Line type="monotone" dataKey="hours" stroke="#f43f5e" strokeWidth={3} dot={{ r: 4, fill: '#fff', strokeWidth: 2, stroke: '#f43f5e' }} activeDot={{ r: 6, fill: '#f43f5e' }} />
                                         </LineChart>
                                     </ResponsiveContainer>
                                 </div>
@@ -198,28 +198,28 @@ export default function UserDashboard() {
                         {/* Right Column - Lectures & Content */}
                         <div className="lg:col-span-2 space-y-6">
                             {selectedLecture ? (
-                                <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="bg-white/5 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-3xl shadow-xl min-h-[600px]">
-                                    <button onClick={() => setSelectedLecture(null)} className="mb-8 flex items-center gap-2 text-rose-400 hover:text-rose-300 text-sm tracking-wide font-medium transition-colors group">
+                                <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="bg-white/90 backdrop-blur-xl border border-rose-100 p-8 md:p-12 rounded-3xl shadow-xl shadow-rose-900/5 min-h-[600px]">
+                                    <button onClick={() => setSelectedLecture(null)} className="mb-8 flex items-center gap-2 text-rose-500 hover:text-rose-600 text-sm tracking-wide font-bold transition-colors group">
                                         <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> Back to Library
                                     </button>
-                                    <div className="prose prose-invert prose-rose max-w-none prose-headings:font-bold prose-h1:text-4xl prose-h1:tracking-tight prose-h1:mb-8 prose-p:text-neutral-300 prose-p:leading-relaxed prose-p:font-light prose-strong:text-white">
+                                    <div className="prose prose-rose max-w-none prose-headings:font-bold prose-h1:text-4xl prose-h1:tracking-tight prose-h1:mb-8 prose-p:text-rose-900/80 prose-p:leading-relaxed prose-strong:text-rose-950">
                                         <h1>{selectedLecture.title}</h1>
                                         <div dangerouslySetInnerHTML={{ __html: selectedLecture.content.replace(/\n/g, '<br/>') }} />
                                     </div>
                                 </motion.div>
                             ) : (
-                                <div className="bg-white/5 backdrop-blur-md border border-white/10 p-8 md:p-10 rounded-3xl shadow-xl min-h-[600px]">
+                                <div className="bg-white/80 backdrop-blur-xl border border-rose-100 p-8 md:p-10 rounded-3xl shadow-xl shadow-rose-900/5 min-h-[600px]">
                                     <div className="mb-10">
-                                        <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
-                                            <BookOpen className="text-indigo-400" size={28} /> Study Material
+                                        <h2 className="text-2xl font-bold text-rose-950 tracking-tight flex items-center gap-3">
+                                            <BookOpen className="text-rose-500" size={28} /> Study Material
                                         </h2>
-                                        <p className="text-neutral-400 mt-2 font-light">Unlock modules and push the bar.</p>
+                                        <p className="text-rose-500 mt-2 font-medium">Unlock modules and push the bar.</p>
                                     </div>
 
                                     {lectures.length === 0 ? (
-                                        <div className="flex flex-col items-center justify-center p-16 text-center bg-white/5 rounded-2xl border border-dashed border-white/20">
-                                            <Sparkles className="text-neutral-500 mb-4" size={32} />
-                                            <p className="text-neutral-400 font-medium">No files accessible yet.<br />Awaiting secure transmission from Admin.</p>
+                                        <div className="flex flex-col items-center justify-center p-16 text-center bg-rose-50/50 rounded-2xl border border-dashed border-rose-200">
+                                            <Sparkles className="text-rose-300 mb-4" size={32} />
+                                            <p className="text-rose-400 font-medium">No files accessible yet.<br />Awaiting secure transmission from Admin.</p>
                                         </div>
                                     ) : (
                                         <div className="grid md:grid-cols-2 gap-4">

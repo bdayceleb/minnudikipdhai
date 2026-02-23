@@ -77,7 +77,7 @@ export default function LandingPage() {
             >
               "I know it gets hard sometimes, <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-fuchsia-400 to-indigo-400">
-                but this time, I'm holding your hand through it all."
+                but this time, I'm holding your hand a bit more harder and closer."
               </span>
             </motion.h1>
 
@@ -253,7 +253,7 @@ export default function LandingPage() {
       <footer className="relative z-10 py-8 border-t border-white/5 bg-neutral-950/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <p className="text-neutral-500 text-sm font-medium flex items-center justify-center gap-2">
-            Made with <Heart size={14} className="text-rose-500 fill-rose-500 animate-pulse" /> by you dear daddy
+            Made with <Heart size={14} className="text-rose-500 fill-rose-500 animate-pulse" /> by you Dear Daddy
           </p>
         </div>
       </footer>

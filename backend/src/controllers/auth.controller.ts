@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import prisma from '../config/prisma';
 import { config } from '../config';
@@ -12,15 +11,15 @@ const generateTokens = (userId: string, role: string) => {
 
 export const login = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { email, password } = req.body;
+        const { username, password } = req.body;
 
-        const user = await prisma.user.findUnique({ where: { email } });
+        const user = await prisma.user.findUnique({ where: { username } });
         if (!user) {
             res.status(401).json({ error: 'Invalid credentials' });
             return;
         }
 
-        const isValidPassword = await bcrypt.compare(password, user.password_hash);
+        const isValidPassword = password === user.password;
         if (!isValidPassword) {
             res.status(401).json({ error: 'Invalid credentials' });
             return;
@@ -53,7 +52,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         });
 
         res.json({
-            user: { id: user.id, name: user.name, email: user.email, role: user.role },
+            user: { id: user.id, name: user.name, username: user.username, role: user.role },
             sessionId: session.id
         });
 
@@ -139,7 +138,7 @@ export const getMe = async (req: Request, res: Response): Promise<void> => {
 
         const user = await prisma.user.findUnique({
             where: { id: userId },
-            select: { id: true, name: true, email: true, role: true }
+            select: { id: true, name: true, username: true, role: true }
         });
 
         if (!user) {

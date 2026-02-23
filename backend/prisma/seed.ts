@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -7,32 +6,30 @@ async function main() {
     console.log('Seeding database...');
 
     // Create Admin
-    const adminPassword = await bcrypt.hash('admin123', 10);
     const admin = await prisma.user.upsert({
-        where: { email: 'admin@pushthebar.com' },
+        where: { username: 'chimarkhi' },
         update: {},
         create: {
-            email: 'admin@pushthebar.com',
+            username: 'chimarkhi',
             name: 'Deepak (Admin)',
-            password_hash: adminPassword,
+            password: 'MinnisDaddy2904',
             role: 'ADMIN',
         },
     });
-    console.log(`Created admin: ${admin.email}`);
+    console.log(`Created admin: ${admin.username}`);
 
     // Create User (Her)
-    const userPassword = await bcrypt.hash('user123', 10);
     const user = await prisma.user.upsert({
-        where: { email: 'user@pushthebar.com' },
+        where: { username: 'vedika2904' },
         update: {},
         create: {
-            email: 'user@pushthebar.com',
-            name: 'Minni',
-            password_hash: userPassword,
+            username: 'vedika2904',
+            name: 'Vedika',
+            password: 'Myname@2904',
             role: 'USER',
         },
     });
-    console.log(`Created user: ${user.email}`);
+    console.log(`Created user: ${user.username}`);
 
     // Create Sample Lecture
     await prisma.lecture.create({

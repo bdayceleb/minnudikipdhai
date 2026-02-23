@@ -28,7 +28,7 @@ export const getAdminDashboardStats = async (req: AuthRequest, res: Response): P
         const recentSessions = await prisma.session.findMany({
             take: 10,
             orderBy: { login_time: 'desc' },
-            include: { user: { select: { name: true, email: true } } }
+            include: { user: { select: { name: true, username: true } } }
         });
 
         // 5. Page Activity Summary
