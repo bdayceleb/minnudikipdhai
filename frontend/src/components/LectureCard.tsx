@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { FileText, Lock } from 'lucide-react';
 
 interface Lecture {
     id: string;
@@ -8,36 +8,50 @@ interface Lecture {
     created_at: string;
 }
 
-interface Props {
+interface LectureCardProps {
     lecture: Lecture;
-    onClick: (id: string) => void;
+    onClick: () => void;
     isAdmin?: boolean;
 }
 
-export default function LectureCard({ lecture, onClick, isAdmin }: Props) {
+export default function LectureCard({ lecture, onClick, isAdmin }: LectureCardProps) {
     return (
-        <motion.div
-            whileHover={{ y: -5 }}
-            className={`p-6 rounded-2xl border ${!lecture.is_published ? 'bg-gray-50 border-gray-200' : 'bg-white border-pink-100 shadow-sm hover:shadow-md'} cursor-pointer transition-all relative overflow-hidden`}
-            onClick={() => onClick(lecture.id)}
+        <div
+            onClick={onClick}
+            className={`
+                bg-white/5 border backdrop-blur-sm rounded-2xl p-6 cursor-pointer transition-all duration-300 group
+                ${isAdmin && !lecture.is_published
+                    ? 'border-yellow-500/30 hover:border-yellow-500/60 hover:bg-yellow-500/5'
+                    : 'border-white/10 hover:border-rose-500/50 hover:bg-white/[0.07]'
+                }
+            `}
         >
-            {isAdmin && (
-                <div className={`absolute top-0 right-0 px-3 py-1 rounded-bl-xl text-xs font-semibold ${lecture.is_published ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-600'}`}>
-                    {lecture.is_published ? 'Published' : 'Draft'}
+            <div className="flex justify-between items-start mb-4">
+                <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                    {isAdmin && !lecture.is_published ? (
+                        <Lock size={20} className="text-yellow-400" />
+                    ) : (
+                        <FileText size={20} className={isAdmin ? "" : "text-rose-400"} />
+                    )}
                 </div>
-            )}
-            <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-100 to-rose-50 text-2xl flex items-center justify-center shrink-0">
-                    📚
-                </div>
-                <div>
-                    <h3 className="font-semibold text-gray-800 text-lg">{lecture.title}</h3>
-                    <p className="text-gray-500 text-sm mt-1 line-clamp-2">{lecture.description || 'No description provided.'}</p>
-                    <div className="mt-3 text-xs text-gray-400">
-                        Added on {new Date(lecture.created_at).toLocaleDateString()}
-                    </div>
-                </div>
+                {isAdmin && (
+                    <span className={`text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded-full ${lecture.is_published ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/20' : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/20'}`}>
+                        {lecture.is_published ? 'Published' : 'Draft'}
+                    </span>
+                )}
             </div>
-        </motion.div>
+
+            <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-rose-400 transition-colors">
+                {lecture.title}
+            </h3>
+
+            <p className="text-sm text-neutral-400 font-light line-clamp-2 leading-relaxed">
+                {lecture.description}
+            </p>
+
+            <div className="mt-6 text-xs text-neutral-500 font-medium tracking-wide">
+                Added {new Date(lecture.created_at).toLocaleDateString()}
+            </div>
+        </div>
     );
 }
