@@ -83,3 +83,10 @@ model DailyStudyStats {
 
   @@unique([user_id, date])
 }
+
+model TrackingEvent {
+  id         String   @id @default(uuid())
+  event_type String   // e.g., 'EMAIL_OPEN', 'LINK_CLICK'
+  source     String   // e.g., 'aesthetic_invite_1'
+  created_at DateTime @default(now())
+}

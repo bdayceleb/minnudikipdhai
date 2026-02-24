@@ -50,13 +50,20 @@ export async function GET(req: NextRequest) {
             orderBy: { _sum: { time_spent_seconds: 'desc' } }
         });
 
+        // 7. Tracking Intelligence Feed (Recent 20)
+        const trackingFeed = await prisma.trackingEvent.findMany({
+            take: 20,
+            orderBy: { created_at: 'desc' }
+        });
+
         return NextResponse.json({
             totalTimeSeconds: totalStats._sum.total_time_seconds || 0,
             todayTimeSeconds: todayStats?.total_time_seconds || 0,
             weeklyChart,
             recentSessions,
             pageActivity,
-            chapterActivity
+            chapterActivity,
+            trackingFeed
         });
     } catch (error) {
         console.error('Admin stats error:', error);

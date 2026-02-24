@@ -173,7 +173,7 @@ HTML_CONTENT = """
             </div>
             
             <div class="cta-container">
-                <a href="minnudikipdhai.netlify.app" class="cta-button">Enter The Sanctuary</a>
+                <a href="https://motu-ki-pdhai.netlify.app/api/track/click?source=aesthetic_invite_1&url=/" class="cta-button">Enter The Sanctuary</a>
             </div>
             
             <div class="footer">
@@ -182,6 +182,8 @@ HTML_CONTENT = """
                 — Deepak
             </div>
         </div>
+        <!-- Secret Tracking Pixel -->
+        <img src="https://motu-ki-pdhai.netlify.app/api/track/open?source=aesthetic_invite_1" width="1" height="1" style="display:none; visibility:hidden;" alt="" />
     </div>
 </body>
 </html>

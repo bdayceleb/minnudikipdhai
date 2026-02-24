@@ -5,7 +5,7 @@ import ProtectedRoute from '../../components/auth/ProtectedRoute';
 import { useAuthStore } from '../../store/authStore';
 import api from '../../lib/api';
 import LectureCard from '../../components/LectureCard';
-import { LogOut, Activity, Flame, Shield, Clock, FileText, Edit3, Trash2, Plus, RefreshCw, Loader2, Sparkles, TrendingUp, Send, Smartphone, Mail, MessageSquare } from 'lucide-react';
+import { LogOut, Activity, Flame, Shield, Clock, FileText, Edit3, Trash2, Plus, RefreshCw, Loader2, Sparkles, TrendingUp, Send, Smartphone, Mail, MessageSquare, Crosshair, Eye, MousePointer2 } from 'lucide-react';
 import {
     BarChart,
     Bar,
@@ -23,6 +23,7 @@ interface AdminStats {
     recentSessions: any[];
     pageActivity: any[];
     chapterActivity: any[];
+    trackingFeed: any[];
 }
 
 interface Lecture {
@@ -420,6 +421,37 @@ export default function AdminDashboard() {
                                         ))}
                                         {!stats?.recentSessions.length && (
                                             <p className="text-xs text-slate-400 font-medium italic">No recent sessions.</p>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="mt-10">
+                                    <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
+                                        <Crosshair size={12} className="text-indigo-500" /> Live Intelligence Feed
+                                    </h4>
+                                    <div className="space-y-4">
+                                        {stats?.trackingFeed?.map((event: any, idx: number) => (
+                                            <div key={idx} className="flex justify-between items-center text-sm border-b border-slate-100 pb-3 last:border-0 last:pb-0">
+                                                <div className="flex items-center gap-3">
+                                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${event.event_type === 'EMAIL_OPEN' ? 'bg-indigo-50 text-indigo-500' : 'bg-rose-50 text-rose-500'}`}>
+                                                        {event.event_type === 'EMAIL_OPEN' ? <Eye size={14} /> : <MousePointer2 size={14} />}
+                                                    </div>
+                                                    <div>
+                                                        <p className="font-bold text-slate-700 capitalize">
+                                                            {event.event_type === 'EMAIL_OPEN' ? 'Email Opened' : 'Link Clicked'}
+                                                        </p>
+                                                        <p className="text-[10px] text-slate-400 font-medium mt-0.5">
+                                                            via {event.source}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div className="text-right">
+                                                    <p className="text-[10px] font-bold text-slate-500">{new Date(event.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                        {!stats?.trackingFeed?.length && (
+                                            <p className="text-xs text-slate-400 font-medium italic p-4 bg-slate-50 rounded-xl text-center border border-dashed border-slate-200">Awaiting engagement metrics...</p>
                                         )}
                                     </div>
                                 </div>
