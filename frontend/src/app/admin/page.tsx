@@ -188,6 +188,97 @@ export default function AdminDashboard() {
                                 </div>
                             </div>
 
+                            {/* Chart & Telemetry Summary Grid */}
+                            <div className="grid lg:grid-cols-2 gap-6">
+                                {/* Page Telemetry Breakdown */}
+                                <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
+                                    <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
+                                        <Activity className="text-blue-500" size={20} /> Page Time Analysis
+                                    </h3>
+                                    <div className="space-y-5 flex-1 overflow-y-auto pr-2">
+                                        {stats?.pageActivity.map((pa, idx) => {
+                                            const totalSec = pa._sum.time_spent_seconds;
+                                            const ratio = stats.totalTimeSeconds > 0 ? (totalSec / stats.totalTimeSeconds) * 100 : 0;
+                                            const timeString = totalSec > 3600
+                                                ? `${(totalSec / 3600).toFixed(1)} hrs`
+                                                : `${Math.ceil(totalSec / 60)} mins`;
+
+                                            return (
+                                                <div key={idx} className="group">
+                                                    <div className="flex justify-between text-sm mb-2 items-center">
+                                                        <span className="text-slate-700 font-bold truncate mr-2 flex items-center gap-2" title={pa.page_name}>
+                                                            <div className="w-2 h-2 rounded-full bg-blue-500" />
+                                                            {pa.page_name === '/dashboard' ? 'Dashboard' : pa.page_name}
+                                                        </span>
+                                                        <span className="text-slate-500 font-bold badge bg-slate-50 border border-slate-100 px-2 py-0.5 rounded-lg text-xs">
+                                                            {timeString}
+                                                        </span>
+                                                    </div>
+                                                    <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200 shadow-inner">
+                                                        <div
+                                                            className="h-full bg-blue-500 rounded-full transition-all duration-1000 group-hover:bg-blue-600 relative overflow-hidden"
+                                                            style={{ width: `${Math.min(ratio, 100)}%` }}
+                                                        >
+                                                            <div className="absolute inset-0 bg-white/20 w-full animate-[shimmer_2s_infinite] mix-blend-overlay" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                        {!stats?.pageActivity.length && (
+                                            <div className="h-full flex flex-col items-center justify-center text-slate-400 opacity-50 space-y-2">
+                                                <Activity size={32} />
+                                                <p className="font-medium italic text-sm">Awaiting telemetry data...</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Chapter Telemetry Breakdown */}
+                                <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
+                                    <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
+                                        <FileText className="text-teal-500" size={20} /> Chapter Engagement
+                                    </h3>
+                                    <div className="space-y-5 flex-1 overflow-y-auto pr-2">
+                                        {stats?.chapterActivity?.map((ca: any, idx: number) => {
+                                            const totalSec = ca._sum.time_spent_seconds;
+                                            const ratio = stats.totalTimeSeconds > 0 ? (totalSec / stats.totalTimeSeconds) * 100 : 0;
+                                            const timeString = totalSec > 3600
+                                                ? `${(totalSec / 3600).toFixed(1)} hrs`
+                                                : `${Math.ceil(totalSec / 60)} mins`;
+
+                                            return (
+                                                <div key={idx} className="group">
+                                                    <div className="flex justify-between text-sm mb-2 items-center">
+                                                        <span className="text-slate-700 font-bold truncate mr-2 flex items-center gap-2" title={ca.chapter_title}>
+                                                            <div className="w-2 h-2 rounded-full bg-teal-500" />
+                                                            {ca.chapter_title}
+                                                        </span>
+                                                        <span className="text-slate-500 font-bold badge bg-slate-50 border border-slate-100 px-2 py-0.5 rounded-lg text-xs">
+                                                            {timeString}
+                                                        </span>
+                                                    </div>
+                                                    <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200 shadow-inner">
+                                                        <div
+                                                            className="h-full bg-teal-500 rounded-full transition-all duration-1000 group-hover:bg-teal-600 relative overflow-hidden"
+                                                            style={{ width: `${Math.min(ratio, 100)}%` }}
+                                                        >
+                                                            <div className="absolute inset-0 bg-white/20 w-full animate-[shimmer_2s_infinite] mix-blend-overlay" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                        {!stats?.chapterActivity?.length && (
+                                            <div className="h-full flex flex-col items-center justify-center text-slate-400 opacity-50 space-y-2">
+                                                <FileText size={32} />
+                                                <p className="font-medium italic text-sm">Awaiting chapter tracking...</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+
                             {/* Chart */}
                             <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
                                 <h3 className="text-lg font-bold text-slate-800 mb-8 flex items-center gap-2">
@@ -344,62 +435,8 @@ export default function AdminDashboard() {
                         <div className="lg:col-span-1 space-y-6">
                             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm h-full sticky top-8 relative overflow-hidden">
                                 <h3 className="text-lg font-bold text-slate-800 mb-8 flex items-center gap-2">
-                                    <Activity className="text-emerald-500" size={20} /> Live Telemetry
+                                    <Activity className="text-emerald-500" size={20} /> Watchtower
                                 </h3>
-
-                                <div className="mb-10 bg-slate-50 rounded-xl p-5 border border-slate-100">
-                                    <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4">Page Distribution</h4>
-                                    <div className="space-y-4">
-                                        {stats?.pageActivity.map((pa, idx) => (
-                                            <div key={idx}>
-                                                <div className="flex justify-between text-xs mb-2">
-                                                    <span className="text-slate-700 font-bold truncate mr-2" title={pa.page_name}>
-                                                        {pa.page_name === '/dashboard' ? 'Dashboard' : pa.page_name}
-                                                    </span>
-                                                    <span className="text-slate-500 font-medium">
-                                                        {(pa._sum.time_spent_seconds / 3600).toFixed(1)}h
-                                                    </span>
-                                                </div>
-                                                <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
-                                                    <div
-                                                        className="h-full bg-emerald-500 rounded-full"
-                                                        style={{ width: `${Math.min((pa._sum.time_spent_seconds / stats.totalTimeSeconds) * 100, 100)}%` }}
-                                                    />
-                                                </div>
-                                            </div>
-                                        ))}
-                                        {!stats?.pageActivity.length && (
-                                            <p className="text-xs text-slate-400 font-medium italic">No tracking data yet.</p>
-                                        )}
-                                    </div>
-                                </div>
-
-                                <div className="mb-10 bg-slate-50 rounded-xl p-5 border border-slate-100">
-                                    <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4">Chapter Distribution</h4>
-                                    <div className="space-y-4">
-                                        {stats?.chapterActivity?.map((ca: any, idx: number) => (
-                                            <div key={idx}>
-                                                <div className="flex justify-between text-xs mb-2">
-                                                    <span className="text-slate-700 font-bold truncate mr-2" title={ca.chapter_title}>
-                                                        {ca.chapter_title}
-                                                    </span>
-                                                    <span className="text-slate-500 font-medium">
-                                                        {(ca._sum.time_spent_seconds / 60).toFixed(1)}m
-                                                    </span>
-                                                </div>
-                                                <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
-                                                    <div
-                                                        className="h-full bg-teal-500 rounded-full"
-                                                        style={{ width: `${Math.min((ca._sum.time_spent_seconds / stats.totalTimeSeconds) * 100, 100)}%` }}
-                                                    />
-                                                </div>
-                                            </div>
-                                        ))}
-                                        {!stats?.chapterActivity?.length && (
-                                            <p className="text-xs text-slate-400 font-medium italic">No chapter data yet.</p>
-                                        )}
-                                    </div>
-                                </div>
 
                                 <div>
                                     <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4">Recent Sessions</h4>
