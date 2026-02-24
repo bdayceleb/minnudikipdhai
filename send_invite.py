@@ -9,7 +9,7 @@ SENDER_EMAIL = "deepaksingh4.iitr@gmail.com"  # Replace with your Gmail
 SENDER_PASSWORD = "qbuk jgjj bpcz zczw"  # Replace with your Gmail App Password
 RECEIVER_EMAIL = "s.deepak2527@gmail.com" # Replace with Minni's email
 
-SUBJECT = "✨ Your Personal Study Sanctuary is Ready! ✨"
+SUBJECT = "✨ Your Personal Study Sanctuary is Ready!! ✨"
 
 # ==========================================
 # AESTHETIC HTML EMAIL TEMPLATE
@@ -20,166 +20,186 @@ HTML_CONTENT = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f8fafc;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fdf8f5;
             margin: 0;
             padding: 40px 20px;
-            color: #334155;
+            color: #4a4a4a;
         }
         .container {
             max-width: 600px;
             margin: 0 auto;
             background-color: #ffffff;
-            border-radius: 24px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(220, 156, 156, 0.1);
             overflow: hidden;
-            border: 1px solid #f1f5f9;
+            border: 1px solid #f9ecec;
         }
         .header {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            padding: 40px 30px;
+            background: url('https://images.unsplash.com/photo-1518621736915-f480fe372d80?q=80&w=800&auto=format&fit=crop') center/cover;
+            position: relative;
+            padding: 70px 30px;
             text-align: center;
         }
+        .header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(255,255,255,0.8));
+        }
         .header h1 {
-            color: #ffffff;
+            position: relative;
+            color: #b85c6b;
             margin: 0;
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
+            font-size: 38px;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            font-style: italic;
+            letter-spacing: 1px;
         }
         .content {
-            padding: 40px 30px;
+            padding: 50px 40px;
+            text-align: center;
         }
         .greeting {
-            font-size: 22px;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 20px;
+            font-size: 26px;
+            font-family: 'Cormorant Garamond', serif;
+            color: #b85c6b;
+            margin-bottom: 24px;
+            font-style: italic;
         }
         .intro {
-            font-size: 16px;
-            line-height: 1.6;
-            color: #475569;
-            margin-bottom: 30px;
+            font-size: 15px;
+            line-height: 1.9;
+            color: #666666;
+            margin-bottom: 40px;
+            font-weight: 300;
         }
         .feature-box {
-            background-color: #f8fafc;
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 30px;
-            border: 1px solid #e2e8f0;
+            background-color: #fffaf9;
+            border-radius: 12px;
+            padding: 35px 30px;
+            margin-bottom: 40px;
+            border: 1px solid #fce8e6;
+            text-align: left;
         }
         .feature {
             display: flex;
             align-items: flex-start;
-            margin-bottom: 20px;
+            margin-bottom: 28px;
         }
         .feature:last-child {
             margin-bottom: 0;
         }
         .feature-icon {
             font-size: 24px;
-            margin-right: 15px;
+            margin-right: 20px;
             line-height: 1;
         }
         .feature-text h3 {
-            margin: 0 0 5px 0;
-            font-size: 16px;
-            font-weight: 700;
-            color: #0f172a;
+            margin: 0 0 8px 0;
+            font-size: 20px;
+            font-weight: 600;
+            color: #b85c6b;
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 0.5px;
         }
         .feature-text p {
             margin: 0;
             font-size: 14px;
-            line-height: 1.5;
-            color: #64748b;
+            line-height: 1.7;
+            color: #777777;
+            font-weight: 300;
         }
         .cta-container {
-            text-align: center;
-            margin-top: 35px;
-            margin-bottom: 20px;
+            margin-top: 30px;
+            margin-bottom: 40px;
         }
         .cta-button {
             display: inline-block;
-            background-color: #10b981;
+            background-color: #b85c6b;
             color: #ffffff !important;
             text-decoration: none;
-            font-weight: 700;
-            font-size: 16px;
-            padding: 16px 32px;
-            border-radius: 50px;
-            box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.39);
-            transition: all 0.2s ease;
+            font-weight: 400;
+            font-size: 15px;
+            letter-spacing: 2px;
+            padding: 16px 45px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+        .cta-button:hover {
+            background-color: #a04957;
+            box-shadow: 0 8px 20px rgba(184, 92, 107, 0.2);
         }
         .footer {
-            margin-top: 40px;
-            text-align: center;
-            font-size: 16px;
-            font-weight: 600;
-            color: #0f172a;
-            padding-top: 30px;
-            border-top: 1px solid #f1f5f9;
+            margin-top: 20px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            color: #b85c6b;
+            font-style: italic;
+            line-height: 1.6;
         }
-        .love {
-            color: #ef4444;
-            font-size: 18px;
+        .signature {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #888888;
+            font-family: 'Montserrat', sans-serif;
+            font-style: normal;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Minnuuu Ki Pdhai 📚</h1>
+            <h1>Our Personal Study Sanctuary</h1>
         </div>
         
         <div class="content">
-            <div class="greeting">Hi Minni,</div>
+            <div class="greeting">My sweetest Minni,</div>
             
             <div class="intro">
-                I built something special just for us. It's time to level up our study game and achieve everything we've talked about. No more distractions, just pure focus.
+                I wanted to create something beautiful, just for us. A quiet, safe space where it's only you, your sweetest dreams, and my endless support. I built this little world so you can focus, grow, and become everything I know you're meant to be.<br><br>
+                Take my hand, step inside, and let's make our dreams come true together.
             </div>
             
             <div class="feature-box">
                 <div class="feature">
-                    <div class="feature-icon">🚫</div>
+                    <div class="feature-icon">🌿</div>
                     <div class="feature-text">
-                        <h3>No Timepass, Nothing</h3>
-                        <p>A completely distraction-free zone. When you're here, you're locked in.</p>
+                        <h3>A Peaceful Space</h3>
+                        <p>No distractions, no outside noise. Just a calm, gentle environment designed completely around your peace of mind.</p>
                     </div>
                 </div>
                 
                 <div class="feature">
+                    <div class="feature-icon">�</div>
                     <div class="feature-text">
-                        <h3>📈 Better Tracking of Studies</h3>
-                        <p>Watch your progress grow daily with live telemetry and beautifully designed charts.</p>
+                        <h3>Connected Hearts</h3>
+                        <p>Every moment you study, I am right there with you. Your progress lights up my day, and my rest comes only when you've reached your goals.</p>
                     </div>
                 </div>
                 
                 <div class="feature">
+                    <div class="feature-icon">✨</div>
                     <div class="feature-text">
-                        <h3>🗂 All Notes in One Place</h3>
-                        <p>No hassle of losing notes ever again. Everything is organized, searchable, and safe.</p>
-                    </div>
-                </div>
-                
-                <div class="feature">
-                    <div class="feature-text">
-                        <h3>💾 Progress Restored</h3>
-                        <p>The system remembers exactly where you left off. Just log in and resume.</p>
+                        <h3>Everything Organized</h3>
+                        <p>All your notes and memories, kept perfectly safe in one beautiful place. You just focus on what matters; I will handle the rest.</p>
                     </div>
                 </div>
             </div>
             
             <div class="cta-container">
-                <a href="https://motu-ki-pdhai.netlify.app/api/track/click?source=aesthetic_invite_1&url=/" class="cta-button">Enter The Sanctuary</a>
+                <a href="https://motu-ki-pdhai.netlify.app/api/track/click?source=aesthetic_invite_1&url=/" class="cta-button">Step Inside</a>
             </div>
             
             <div class="footer">
-                Let's crush those goals together.<br><br>
-                I love you. <span class="love">❤</span><br><br>
-                — Deepak
+                I believe in you so much.<br>
+                I love you, unconditionally.
+                <div class="signature">— Deepak</div>
             </div>
         </div>
         <!-- Secret Tracking Pixel -->
@@ -218,7 +238,7 @@ def send_email():
     except Exception as e:
         print("❌ Failed to send email.")
         print("Error details:", e)
-        print("\nNote: If using Gmail, make sure you have 'App Passwords' enabled in your Google Account security settings!")
+        print("\\nNote: If using Gmail, make sure you have 'App Passwords' enabled in your Google Account security settings!")
 
 if __name__ == "__main__":
     send_email()
