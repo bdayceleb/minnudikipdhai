@@ -7,7 +7,7 @@ from email.mime.multipart import MIMEMultipart
 # ==========================================
 SENDER_EMAIL = "deepaksingh4.iitr@gmail.com"  # Replace with your Gmail
 SENDER_PASSWORD = "qbuk jgjj bpcz zczw"  # Replace with your Gmail App Password
-RECEIVER_EMAIL = "s.deepak2527@gmail.com" # Replace with Minni's email
+RECEIVER_EMAIL = "vedikamishra2904@gmail.com" # Replace with Minni's email
 
 SUBJECT = "✨ Your Personal Study Sanctuary is Ready!! ✨"
 
@@ -114,6 +114,38 @@ HTML_CONTENT = """
             color: #777777;
             font-weight: 300;
         }
+        .credentials-box {
+            background-color: #fffaf9;
+            border: 1px dashed #eec9cc;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        .credentials-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            color: #b85c6b;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        .cred-row {
+            margin: 8px 0;
+            font-size: 16px;
+        }
+        .cred-label {
+            color: #888888;
+            margin-right: 10px;
+        }
+        .cred-value {
+            color: #4a4a4a;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            background: #fff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 1px solid #f9ecec;
+        }
         .cta-container {
             margin-top: 30px;
             margin-bottom: 40px;
@@ -176,7 +208,7 @@ HTML_CONTENT = """
                 </div>
                 
                 <div class="feature">
-                    <div class="feature-icon">�</div>
+                    <div class="feature-icon">💞</div>
                     <div class="feature-text">
                         <h3>Connected Hearts</h3>
                         <p>Every moment you study, I am right there with you. Your progress lights up my day, and my rest comes only when you've reached your goals.</p>
@@ -191,19 +223,31 @@ HTML_CONTENT = """
                     </div>
                 </div>
             </div>
+
+            <div class="credentials-box">
+                <div class="credentials-title">The Keys to Your Sanctuary</div>
+                <div class="cred-row">
+                    <span class="cred-label">Username:</span>
+                    <span class="cred-value">vedika2904</span>
+                </div>
+                <div class="cred-row">
+                    <span class="cred-label">Password:</span>
+                    <span class="cred-value">Myname@2904</span>
+                </div>
+            </div>
             
             <div class="cta-container">
-                <a href="https://motu-ki-pdhai.netlify.app/api/track/click?source=aesthetic_invite_1&url=/" class="cta-button">Step Inside</a>
+                <a href="https://minnudikipdhai.netlify.app/api/track/click?source=aesthetic_invite_1&url=/login" class="cta-button">Step Inside</a>
             </div>
             
             <div class="footer">
                 I believe in you so much.<br>
                 I love you, unconditionally.
-                <div class="signature">— Deepak</div>
+                <div class="signature">— Your Headache</div>
             </div>
         </div>
         <!-- Secret Tracking Pixel -->
-        <img src="https://motu-ki-pdhai.netlify.app/api/track/open?source=aesthetic_invite_1" width="1" height="1" style="display:none; visibility:hidden;" alt="" />
+        <img src="https://minnudikipdhai.netlify.app/api/track/open?source=aesthetic_invite_1" width="1" height="1" style="display:none; visibility:hidden;" alt="" />
     </div>
 </body>
 </html>
@@ -215,7 +259,7 @@ def send_email():
     # Create the email message container
     msg = MIMEMultipart('alternative')
     msg['Subject'] = SUBJECT
-    msg['From'] = f"Deepak <{SENDER_EMAIL}>"
+    msg['From'] = f"Your Headache <{SENDER_EMAIL}>"
     msg['To'] = RECEIVER_EMAIL
 
     # Attach HTML content
