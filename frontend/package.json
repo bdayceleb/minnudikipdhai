@@ -32,8 +32,10 @@
     "react-markdown": "^10.1.0",
     "recharts": "^3.7.0",
     "remark-gfm": "^4.0.1",
+    "resend": "^6.9.2",
     "sql.js": "^1.14.0",
     "tailwind-merge": "^3.5.0",
+    "twilio": "^5.12.2",
     "zustand": "^5.0.11"
   },
   "devDependencies": {

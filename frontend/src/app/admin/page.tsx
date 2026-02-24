@@ -5,7 +5,7 @@ import ProtectedRoute from '../../components/auth/ProtectedRoute';
 import { useAuthStore } from '../../store/authStore';
 import api from '../../lib/api';
 import LectureCard from '../../components/LectureCard';
-import { LogOut, Activity, Flame, Shield, Clock, FileText, Edit3, Trash2, Plus, RefreshCw, Loader2, Sparkles, TrendingUp } from 'lucide-react';
+import { LogOut, Activity, Flame, Shield, Clock, FileText, Edit3, Trash2, Plus, RefreshCw, Loader2, Sparkles, TrendingUp, Send, Smartphone, Mail, MessageSquare } from 'lucide-react';
 import {
     BarChart,
     Bar,
@@ -41,6 +41,32 @@ export default function AdminDashboard() {
     const [loading, setLoading] = useState(true);
 
     const [editingLecture, setEditingLecture] = useState<Partial<Lecture> | null>(null);
+
+    // Notification State
+    const [notifyMessage, setNotifyMessage] = useState('');
+    const [sendingNotify, setSendingNotify] = useState(false);
+
+    const sendNotification = async (type: 'email' | 'whatsapp' | 'both') => {
+        if (!notifyMessage.trim()) {
+            alert('Please enter a message to send!');
+            return;
+        }
+        setSendingNotify(true);
+        try {
+            const res = await api.post('/notifications/remind', { message: notifyMessage, type });
+            if (res.data.errors) {
+                alert('Warning: Some services are not configured properly.\\n' + res.data.errors.join('\\n'));
+            } else {
+                alert('Notification sent successfully! 🚀');
+                setNotifyMessage('');
+            }
+        } catch (e) {
+            console.error('Failed to notify', e);
+            alert('Failed to send notification. Check console for details.');
+        } finally {
+            setSendingNotify(false);
+        }
+    };
 
     useEffect(() => {
         fetchData();
@@ -176,6 +202,50 @@ export default function AdminDashboard() {
                                             <Bar dataKey="hours" fill="#10B981" radius={[4, 4, 0, 0]} />
                                         </BarChart>
                                     </ResponsiveContainer>
+                                </div>
+                            </div>
+
+                            {/* Communications Center */}
+                            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
+                                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                                    <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                                        <MessageSquare className="text-blue-500" size={20} /> Study Reminders (Minni)
+                                    </h3>
+                                </div>
+
+                                <div className="bg-blue-50/50 border border-blue-100 p-6 rounded-xl relative">
+                                    <textarea
+                                        value={notifyMessage}
+                                        onChange={(e) => setNotifyMessage(e.target.value)}
+                                        placeholder="Type a motivating message here..."
+                                        className="w-full h-24 p-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm font-medium mb-4 shadow-sm resize-none"
+                                    />
+
+                                    <div className="flex flex-wrap gap-3 mt-2">
+                                        <button
+                                            onClick={() => sendNotification('email')}
+                                            disabled={sendingNotify}
+                                            className="px-5 py-2.5 bg-white border border-slate-200 hover:border-blue-300 hover:bg-blue-50 text-slate-700 text-sm font-bold flex items-center gap-2 rounded-xl transition-all shadow-sm disabled:opacity-50"
+                                        >
+                                            <Mail size={16} className="text-blue-500" /> Send Email
+                                        </button>
+                                        <button
+                                            onClick={() => sendNotification('whatsapp')}
+                                            disabled={sendingNotify}
+                                            className="px-5 py-2.5 bg-white border border-slate-200 hover:border-emerald-300 hover:bg-emerald-50 text-slate-700 text-sm font-bold flex items-center gap-2 rounded-xl transition-all shadow-sm disabled:opacity-50"
+                                        >
+                                            <Smartphone size={16} className="text-emerald-500" /> Send WhatsApp
+                                        </button>
+                                        <div className="flex-1" />
+                                        <button
+                                            onClick={() => sendNotification('both')}
+                                            disabled={sendingNotify}
+                                            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold flex items-center gap-2 rounded-xl transition-all shadow-sm disabled:opacity-50"
+                                        >
+                                            {sendingNotify ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
+                                            Send Both
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
