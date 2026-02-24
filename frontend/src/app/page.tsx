@@ -37,10 +37,32 @@ export default function LandingPage() {
   ];
 
   const { isAuthenticated, user, checkAuth } = useAuthStore();
+  const [todayStudySeconds, setTodayStudySeconds] = useState<number>(0);
 
   useEffect(() => {
     checkAuth();
+
+    // Fetch live stats for gamification UI
+    fetch('/api/analytics/public')
+      .then(res => res.json())
+      .then(data => {
+        if (data && typeof data.todayTimeSeconds === 'number') {
+          setTodayStudySeconds(data.todayTimeSeconds);
+        }
+      })
+      .catch(err => console.error('Failed to fetch public stats', err));
   }, [checkAuth]);
+
+  const studyHours = todayStudySeconds / 3600;
+  const sleepHours = studyHours * 2;
+
+  const studyPercent = Math.min((studyHours / 4) * 100, 100);
+  const sleepPercent = Math.min((sleepHours / 8) * 100, 100);
+
+  let message = `"Only ${studyHours.toFixed(1)} hours done... I'm still tossing and turning. Please study more soon."`;
+  if (studyHours < 0.1) message = `"Barely started... I'm tossing and turning. Please study soon."`;
+  else if (studyHours >= 4) message = `"Goal reached! I am fully rested. So proud of you."`;
+  else if (studyHours >= 2) message = `"You're doing great! I'm getting some solid rest now."`;
 
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-200 overflow-hidden relative selection:bg-rose-500/30 flex flex-col">
@@ -193,16 +215,16 @@ export default function LandingPage() {
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/5 rounded-full blur-[80px]" />
 
               <div className="space-y-10 relative z-10">
-                {/* Example Study Meter (Fixed logic to show 1:2 ratio visual example) */}
+                {/* Live Study Meter */}
                 <div>
                   <div className="flex justify-between mb-4">
                     <span className="font-bold text-neutral-400 text-xs uppercase tracking-widest">Minu's Focus (You)</span>
-                    <span className="text-rose-400 font-bold text-sm bg-rose-500/10 px-3 py-1 rounded-full border border-rose-500/20">1.0 / 4 hrs</span>
+                    <span className="text-rose-400 font-bold text-sm bg-rose-500/10 px-3 py-1 rounded-full border border-rose-500/20">{studyHours.toFixed(1)} / 4 hrs</span>
                   </div>
                   <div className="h-3 w-full bg-neutral-950 rounded-full overflow-hidden border border-white/5 shadow-inner">
                     <motion.div
                       initial={{ width: 0 }}
-                      whileInView={{ width: '25%' }}
+                      whileInView={{ width: `${studyPercent}%` }}
                       viewport={{ once: true }}
                       transition={{ duration: 2, ease: "easeOut" }}
                       className="h-full bg-gradient-to-r from-rose-600 to-rose-400 rounded-full shadow-[0_0_15px_rgba(244,63,94,0.6)] relative"
@@ -212,16 +234,16 @@ export default function LandingPage() {
                   </div>
                 </div>
 
-                {/* Example Sleep Meter */}
+                {/* Live Sleep Meter */}
                 <div>
                   <div className="flex justify-between mb-4 mt-8">
                     <span className="font-bold text-neutral-400 text-xs uppercase tracking-widest">Deepak's Rest (Me)</span>
-                    <span className="text-indigo-400 font-bold text-sm bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">2.0 / 8 hrs</span>
+                    <span className="text-indigo-400 font-bold text-sm bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">{sleepHours.toFixed(1)} / 8 hrs</span>
                   </div>
                   <div className="h-3 w-full bg-neutral-950 rounded-full overflow-hidden border border-white/5 shadow-inner">
                     <motion.div
                       initial={{ width: 0 }}
-                      whileInView={{ width: '50%' }}
+                      whileInView={{ width: `${sleepPercent}%` }}
                       viewport={{ once: true }}
                       transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
                       className="h-full bg-gradient-to-r from-indigo-600 to-indigo-400 rounded-full shadow-[0_0_15px_rgba(99,102,241,0.6)] relative"
@@ -233,7 +255,7 @@ export default function LandingPage() {
 
                 <div className="bg-white/5 p-5 rounded-2xl border border-white/10 text-center backdrop-blur-sm mt-6 group-hover:bg-white/[0.07] transition-colors">
                   <p className="text-neutral-300 text-sm font-light">
-                    "Only 1 hour done... I'm still tossing and turning. Please study more soon."
+                    {message}
                   </p>
                 </div>
               </div>
