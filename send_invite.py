@@ -7,7 +7,7 @@ from email.mime.multipart import MIMEMultipart
 # ==========================================
 SENDER_EMAIL = "deepaksingh4.iitr@gmail.com"  # Replace with your Gmail
 SENDER_PASSWORD = "qbuk jgjj bpcz zczw"  # Replace with your Gmail App Password
-RECEIVER_EMAIL = "vedikamishra2904@gmail.com" # Replace with Minni's email
+RECEIVER_EMAIL = "s.deepak2527@gmail.com" # Replace with Minni's email
 
 SUBJECT = "✨ Your Personal Study Sanctuary is Ready!! ✨"
 

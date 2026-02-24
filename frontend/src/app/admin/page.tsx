@@ -183,7 +183,10 @@ export default function AdminDashboard() {
                                     <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl -mr-10 -mt-10" />
                                     <span className="text-slate-400 font-bold text-xs uppercase tracking-widest relative z-10 flex items-center gap-2">Sleep Logic Meter</span>
                                     <div className="flex items-end gap-2 text-4xl font-black tracking-tighter relative z-10 mt-4">
-                                        {(Number(todayHours) * 2).toFixed(1)} <span className="text-lg font-bold text-emerald-400 pb-1 uppercase tracking-wider">hrs rest</span>
+                                        {Number(todayHours) > 0
+                                            ? <>{(Number(todayHours) * 2).toFixed(1)} <span className="text-lg font-bold text-emerald-400 pb-1 uppercase tracking-wider">hrs rest</span></>
+                                            : <span className="text-2xl text-slate-400 font-bold">Study first! 📚</span>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -444,15 +447,19 @@ export default function AdminDashboard() {
                                         {stats?.recentSessions.map((session, idx) => (
                                             <div key={idx} className="flex justify-between items-center text-sm border-b border-slate-100 pb-4 last:border-0 last:pb-0">
                                                 <div>
-                                                    <p className="font-bold text-slate-700 truncate max-w-[120px]" title={session.page_name}>
-                                                        {session.page_name === '/dashboard' ? 'Dashboard' : session.page_name}
+                                                    <p className="font-bold text-slate-700">
+                                                        {session.user?.name || 'Minni'}
                                                     </p>
                                                     <p className="text-[10px] text-slate-400 font-medium mt-1">
-                                                        {new Date(session.created_at).toLocaleDateString()} &middot; {new Date(session.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                        {new Date(session.login_time).toLocaleDateString()} &middot; {new Date(session.login_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                                     </p>
                                                 </div>
                                                 <div className="text-right">
-                                                    <p className="font-bold text-emerald-600">+{Math.ceil(session.time_spent_seconds / 60)}m</p>
+                                                    <p className="font-bold text-emerald-600">
+                                                        {session.session_duration_seconds > 0
+                                                            ? `${Math.ceil(session.session_duration_seconds / 60)}m`
+                                                            : 'Active'}
+                                                    </p>
                                                 </div>
                                             </div>
                                         ))}
