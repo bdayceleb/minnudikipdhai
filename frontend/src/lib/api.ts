@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api',
+    baseURL: '/api',
     withCredentials: true, // Send cookies with every request
 });
 
@@ -17,16 +17,12 @@ api.interceptors.response.use(
 
             try {
                 // Attempt to refresh token
-                await axios.post(
-                    `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'}/auth/refresh`,
-                    {},
-                    { withCredentials: true }
-                );
+                await axios.post('/api/auth/refresh', {}, { withCredentials: true });
 
                 // Retry original request
                 return api(originalRequest);
             } catch (refreshError) {
-                // Refresh failed, logout user (will be handled by store/components)
+                // Refresh failed, logout user
                 return Promise.reject(refreshError);
             }
         }
