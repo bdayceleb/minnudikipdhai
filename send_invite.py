@@ -131,7 +131,7 @@ HTML_CONTENT = """
 <body>
     <div class="container">
         <div class="header">
-            <h1>Motu Ki Pdhai 📚</h1>
+            <h1>Minnuuu Ki Pdhai 📚</h1>
         </div>
         
         <div class="content">
@@ -173,7 +173,7 @@ HTML_CONTENT = """
             </div>
             
             <div class="cta-container">
-                <a href="https://motu-ki-pdhai.netlify.app" class="cta-button">Enter The Sanctuary</a>
+                <a href="minnudikipdhai.netlify.app" class="cta-button">Enter The Sanctuary</a>
             </div>
             
             <div class="footer">
